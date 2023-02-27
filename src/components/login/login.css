@@ -1,0 +1,9 @@
+.login {
+  margin: 32px 0;
+  padding: 32px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid #ddd;
+}
