@@ -1,6 +1,12 @@
-import { component$, useClientEffect$, useStore, useStylesScoped$ } from '@builder.io/qwik';
-import { DocumentHead, useLocation } from '@builder.io/qwik-city';
-import styles from './flower.css?inline';
+import {
+  component$,
+  useVisibleTask$,
+  useStore,
+  useStylesScoped$,
+} from "@builder.io/qwik";
+import type { DocumentHead } from "@builder.io/qwik-city";
+import { useLocation } from "@builder.io/qwik-city";
+import styles from "./flower.css?inline";
 
 export default component$(() => {
   useStylesScoped$(styles);
@@ -11,7 +17,8 @@ export default component$(() => {
     number: 20,
   });
 
-  useClientEffect$(({ cleanup }) => {
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ cleanup }: { cleanup: (fn: () => void) => void }) => {
     const timeout = setTimeout(() => (state.count = 1), 500);
     cleanup(() => clearTimeout(timeout));
 
@@ -31,11 +38,11 @@ export default component$(() => {
       />
       <div
         style={{
-          '--state': `${state.count * 0.1}`,
+          "--state": `${state.count * 0.1}`,
         }}
         class={{
           host: true,
-          pride: loc.query['pride'] === 'true',
+          pride: loc.url.searchParams.get("pride") === "true",
         }}
       >
         {Array.from({ length: state.number }, (_, i) => (
@@ -45,7 +52,7 @@ export default component$(() => {
               square: true,
               odd: i % 2 === 0,
             }}
-            style={{ '--index': `${i + 1}` }}
+            style={{ "--index": `${i + 1}` }}
           />
         )).reverse()}
       </div>
@@ -54,5 +61,5 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'Qwik Flower',
+  title: "Qwik Flower",
 };
